@@ -10,6 +10,7 @@ uvicorn = "*"
 pydantic = {extras = ["email"], version = "*"}
 pymongo = "*"
 pyjwt = "*"
+passlib = "*"
 
 [dev-packages]
 black = "*"

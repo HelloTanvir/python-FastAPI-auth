@@ -2,6 +2,7 @@ import os
 from datetime import datetime, timedelta
 
 from fastapi.exceptions import HTTPException
+from passlib.hash import pbkdf2_sha256
 
 from app.db.db import db
 from app.utils.auth_dto import LoginDto, SignupDto
@@ -14,6 +15,9 @@ def signup(body: SignupDto) -> Tokens:
 
     # set initial refresh_token of the user empty
     user["refresh_token"] = ""
+
+    # hash password
+    user["password"] = pbkdf2_sha256.hash(user["password"])
 
     result = db.users.insert_one(user)
 
@@ -42,7 +46,8 @@ def login(body: LoginDto) -> Tokens:
     if not user:
         raise HTTPException(detail="User not found", status_code=400)
 
-    if user['password'] != body.password:
+    # verify password
+    if not pbkdf2_sha256.verify(body.password, user['password']):
         raise HTTPException(detail="Incorrect password", status_code=400)
 
     # generate access token
