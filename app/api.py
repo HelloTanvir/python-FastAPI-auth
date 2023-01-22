@@ -2,8 +2,8 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.services.auth_service import signup_service
-from app.utils.auth_dto import SignupDto
+from app.services import auth_service
+from app.utils.auth_dto import LoginDto, SignupDto
 from app.utils.auth_response import Tokens
 
 load_dotenv()
@@ -29,4 +29,8 @@ def read_root():
 
 @app.post("/signup")
 def signup(body: SignupDto) -> Tokens:
-    return signup_service(body)
+    return auth_service.signup(body)
+
+@app.post("/login")
+def login(body: LoginDto) -> Tokens:
+    return auth_service.login(body)
