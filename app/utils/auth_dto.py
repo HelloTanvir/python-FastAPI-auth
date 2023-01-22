@@ -39,3 +39,6 @@ class LoginDto(BaseModel):
         if len(value) < 6:
             raise ValueError("Password must be at least 6 characters long")
         return value
+
+class RefreshTokensDto(BaseModel):
+    refresh_token: str
