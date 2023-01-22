@@ -1,4 +1,4 @@
-signup_schema = {
+user_schema = {
     "properties": {
         "name": {"type": "string"},
         "email": {"type": "string"},

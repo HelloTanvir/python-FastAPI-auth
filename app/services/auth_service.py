@@ -2,9 +2,9 @@ import os
 from datetime import datetime, timedelta
 
 from app.db.db import db
+from app.utils.auth_dto import SignupDto
 from app.utils.auth_response import Tokens
 from app.utils.generate_token import generate_token
-from app.utils.signup_dto import SignupDto
 
 
 def signup_service(body: SignupDto) -> Tokens:
