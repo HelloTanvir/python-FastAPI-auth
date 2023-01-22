@@ -1,11 +1,13 @@
+from datetime import datetime, timedelta
+
 import jwt
 from fastapi import Depends
 from fastapi.exceptions import HTTPException
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 
-def generate_token(payload: dict, secret: str, expires_in: float) -> str:
-    payload['exp'] = expires_in
+def generate_token(payload: dict, secret: str, expires_in: timedelta) -> str:
+    payload['exp'] = datetime.utcnow() + expires_in
     token = str(jwt.encode(payload, secret, algorithm='HS256'))
     return token
 
