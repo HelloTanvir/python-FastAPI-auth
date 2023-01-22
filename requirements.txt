@@ -1,0 +1,7 @@
+fastapi==*
+python-dotenv==*
+uvicorn==*
+pydantic[email]==*
+pymongo==*
+pyjwt==*
+passlib==*
