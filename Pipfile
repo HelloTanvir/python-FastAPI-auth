@@ -8,6 +8,8 @@ fastapi = "*"
 python-dotenv = "*"
 uvicorn = "*"
 pydantic = {extras = ["email"], version = "*"}
+pymongo = "*"
+pyjwt = "*"
 
 [dev-packages]
 black = "*"
