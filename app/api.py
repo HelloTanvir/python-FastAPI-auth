@@ -13,32 +13,35 @@ load_dotenv()
 
 app = FastAPI()
 
-origins = [
-    "http://localhost:3000",
-    "localhost:3000"
-]
+origins = ["http://localhost:3000", "localhost:3000"]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"]
+    allow_headers=["*"],
 )
+
 
 @app.get("/")
 def read_root():
     return {"message": "Hello World"}
 
+
 @app.post("/signup")
 def signup(body: SignupDto) -> Tokens:
     return auth_service.signup(body)
+
 
 @app.post("/login")
 def login(body: LoginDto) -> Tokens:
     return auth_service.login(body)
 
+
 @app.post("/refresh-tokens")
-def refresh_tokens(body: RefreshTokensDto, access_token:str = Depends(get_token)) -> Tokens:
-    id = verify_token(access_token, os.environ["AT_SECRET_KEY"])['id']
+def refresh_tokens(
+    body: RefreshTokensDto, access_token: str = Depends(get_token)
+) -> Tokens:
+    id = verify_token(access_token, os.environ["AT_SECRET_KEY"])["id"]
     return auth_service.refresh_tokens(id, body)
