@@ -1,9 +1,12 @@
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.services.signup import signup_service
 from app.utils.auth_response import Tokens
 from app.utils.signup_dto import SignupDto
+
+load_dotenv()
 
 app = FastAPI()
 
