@@ -3,7 +3,7 @@ signup_schema = {
         "name": {"type": "string"},
         "email": {"type": "string"},
         "password": {"type": "string"},
-        "refresh_token": {"type": "string", "default": None}
+        "refresh_token": {"type": "string"}
     },
     "required": ["name", "email", "password"]
 }

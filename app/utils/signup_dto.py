@@ -1,4 +1,7 @@
+from fastapi.exceptions import HTTPException
 from pydantic import BaseModel, validate_email, validator
+
+from app.db.db import db
 
 
 class SignupDto(BaseModel):
@@ -9,6 +12,11 @@ class SignupDto(BaseModel):
     @validator("email")
     def email_must_be_valid(cls, value):
         if validate_email(value):
+            user = db.users.find_one({"email": value})
+
+            if user:
+                raise HTTPException(detail="Email already exists", status_code=400)
+
             return value
 
     @validator("password")

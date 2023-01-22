@@ -8,7 +8,12 @@ from app.utils.signup_dto import SignupDto
 
 
 def signup_service(body: SignupDto) -> Tokens:
-    result = db.users.insert_one(body.dict())
+    user = body.dict()
+
+    # set initial refresh_token of the user empty
+    user["refresh_token"] = ""
+
+    result = db.users.insert_one(user)
 
     # generate access token
     access_token_expires = (datetime.utcnow() + timedelta(minutes=15)).timestamp()
