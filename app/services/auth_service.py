@@ -1,3 +1,4 @@
+"""This module provides some functions for working with authentication."""
 import os
 from datetime import timedelta
 
@@ -12,6 +13,7 @@ from app.utils.token import generate_token, verify_token
 
 
 def signup(body: SignupDto) -> Tokens:
+    """Signup a user and return access token and refresh token"""
     user = body.dict()
 
     # set initial refresh_token of the user empty
@@ -26,14 +28,18 @@ def signup(body: SignupDto) -> Tokens:
     access_token_expires = timedelta(minutes=15)
     access_token_secret = os.environ["AT_SECRET_KEY"]
     access_token = generate_token(
-        {"id": str(result.inserted_id)}, access_token_secret, access_token_expires
+        {"id": str(result.inserted_id)},
+        access_token_secret,
+        access_token_expires,
     )
 
     # generate refresh token
     refresh_token_expires = timedelta(weeks=1)
     refresh_token_secret = os.environ["RT_SECRET_KEY"]
     refresh_token = generate_token(
-        {"id": str(result.inserted_id)}, refresh_token_secret, refresh_token_expires
+        {"id": str(result.inserted_id)},
+        refresh_token_secret,
+        refresh_token_expires,
     )
 
     # update refresh token in db
@@ -45,6 +51,7 @@ def signup(body: SignupDto) -> Tokens:
 
 
 def login(body: LoginDto) -> Tokens:
+    """Login a user and return access token and refresh token"""
     user = db.users.find_one({"email": body.email})
 
     if not user:
@@ -76,8 +83,9 @@ def login(body: LoginDto) -> Tokens:
     return {"access_token": access_token, "refresh_token": refresh_token}
 
 
-def refresh_tokens(id: str, body: RefreshTokensDto) -> Tokens:
-    user = db.users.find_one({"_id": ObjectId(id)})
+def refresh_tokens(user_id: str, body: RefreshTokensDto) -> Tokens:
+    """Update and return access token and refresh token"""
+    user = db.users.find_one({"_id": ObjectId(user_id)})
 
     if not user:
         raise HTTPException(detail="User not found", status_code=400)

@@ -16,6 +16,8 @@ passlib = "*"
 black = "*"
 flake8 = "*"
 mypy = "*"
+pylint = "*"
+mypy-extensions = "*"
 
 [requires]
 python_version = "3.10"

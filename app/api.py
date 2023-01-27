@@ -1,3 +1,4 @@
+"""API module"""
 import os
 
 from dotenv import load_dotenv
@@ -26,16 +27,19 @@ app.add_middleware(
 
 @app.get("/")
 def read_root():
+    """This function returns the message 'Hello World'"""
     return {"message": "Hello World"}
 
 
 @app.post("/signup")
 def signup(body: SignupDto) -> Tokens:
+    """This function handles the signup request"""
     return auth_service.signup(body)
 
 
 @app.post("/login")
 def login(body: LoginDto) -> Tokens:
+    """This function handles the login request"""
     return auth_service.login(body)
 
 
@@ -43,5 +47,6 @@ def login(body: LoginDto) -> Tokens:
 def refresh_tokens(
     body: RefreshTokensDto, access_token: str = Depends(get_token)
 ) -> Tokens:
-    id = verify_token(access_token, os.environ["AT_SECRET_KEY"])["id"]
-    return auth_service.refresh_tokens(id, body)
+    """This function handles the refresh tokens request"""
+    user_id = verify_token(access_token, os.environ["AT_SECRET_KEY"])["id"]
+    return auth_service.refresh_tokens(user_id, body)

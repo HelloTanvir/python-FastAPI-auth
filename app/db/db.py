@@ -1,3 +1,4 @@
+"""This module provides the creation and connection to the database"""
 import os
 
 from pymongo import MongoClient
